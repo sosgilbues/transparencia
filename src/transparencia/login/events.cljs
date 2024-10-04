@@ -13,7 +13,7 @@
   ::login
   (fn-traced [{:keys [db]} _]
              {:http-xhrio {:method          :post
-                           :uri             "http://localhost:8080/api/customers/auth"
+                           :uri             "https://api-ong-auth.sosgilbues.org.br/api/customers/auth"
                            :params          {:username (-> db :login-form :username)
                                              :password (-> db :login-form :password)}
                            :timeout         5000

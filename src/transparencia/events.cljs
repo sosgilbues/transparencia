@@ -31,7 +31,7 @@
   (fn-traced [{:keys [db]} _]
     (println (-> db :login-form :password))        ;; the first param will be "world"
     {:http-xhrio {:method          :post
-                  :uri             "http://localhost:8010/api/customers/auth"
+                  :uri             "https://api-ong-auth.sosgilbues.org.br/api/customers/auth"
                   :params          {:username (-> db :login-form :username)
                                     :password (-> db :login-form :password)}
                   :timeout         5000
