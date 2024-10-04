@@ -1,0 +1,28 @@
+name: Clojure CI - Build Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+
+  build-release:
+    permissions: write-all
+
+    name: Build Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Generate Release Files
+        run: |
+          npm install
+          npx shadow-cljs release app --verbose
+
+      - name: Commit Rendered Blog Files
+        uses: EndBug/add-and-commit@v7
+        with:
+          message: 'Build Release files'
+          author_name: GitHub Actions
+          author_email: actions@github.com
