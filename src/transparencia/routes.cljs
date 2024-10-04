@@ -1,17 +1,20 @@
 (ns transparencia.routes
   (:require
-   [bidi.bidi :as bidi]
-   [pushy.core :as pushy]
-   [re-frame.core :as re-frame]
-   [transparencia.events :as events]))
+    [bidi.bidi :as bidi]
+    [pushy.core :as pushy]
+    [re-frame.core :as re-frame]
+    [transparencia.events :as events]))
 
 (defmulti panels identity)
 (defmethod panels :default [] [:div "No panel found for this route."])
 
 (def routes
   (atom
-    ["/" {""      :home
-          "about" :about}]))
+    ["/" {""                    :home
+          "login"               :login
+          "manage"              :manage
+          "add-transaction"     :add-transaction
+          "transaction-details" {["/" :id] :transaction-details}}]))
 
 (defn parse
   [url]
@@ -24,10 +27,10 @@
 (defn dispatch
   [route]
   (let [panel (keyword (str (name (:handler route)) "-panel"))]
-    (re-frame/dispatch [::events/set-active-panel panel])))
+    (re-frame/dispatch [::events/set-active-panel {:route route :panel panel}])))
 
 (defonce history
-  (pushy/pushy dispatch parse))
+         (pushy/pushy dispatch parse))
 
 (defn navigate!
   [handler]

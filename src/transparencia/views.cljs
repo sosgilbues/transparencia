@@ -1,41 +1,28 @@
 (ns transparencia.views
   (:require
-   [re-frame.core :as re-frame]
-   [transparencia.events :as events]
-   [transparencia.routes :as routes]
-   [transparencia.subs :as subs]
-   ))
-
+    [re-frame.core :as re-frame]
+    [transparencia.events :as events]
+    [transparencia.routes :as routes]
+    [transparencia.subs :as subs]
+    [transparencia.login.views]
+    [transparencia.manage.views]
+    [transparencia.transaction.views]))
 
 ;; home
 
 (defn home-panel []
-  (let [name (re-frame/subscribe [::subs/name])]
-    [:div
-     [:h1
-      (str "Hello from " @name ". This is the Home Page.")]
+  [:div.container
+   [:h1.title
+    "Página Principal"]
 
-     [:div
-      [:a {:on-click #(re-frame/dispatch [::events/navigate :about])}
-       "go to About Page"]]
-     ]))
+   [:div.container
+    [:button.button {:on-click #(routes/navigate! :login)}
+     "Login"]]])
 
 (defmethod routes/panels :home-panel [] [home-panel])
-
-;; about
-
-(defn about-panel []
-  [:div
-   [:h1 "This is the About Page."]
-
-   [:div
-    [:a {:on-click #(re-frame/dispatch [::events/navigate :home])}
-     "go to Home Page"]]])
-
-(defmethod routes/panels :about-panel [] [about-panel])
 
 ;; main
 
 (defn main-panel []
   (let [active-panel (re-frame/subscribe [::subs/active-panel])]
-    (routes/panels @active-panel)))
+    (routes/panels (:panel @active-panel))))
